@@ -3,6 +3,14 @@ from pygments.token import *
 
 __all__ = ['MisaLexer']
 
+_zeroadic_instructions = (
+    'nop',
+    'ret',
+    'break',
+    'yield',
+    'exit'
+)
+
 class MisaLexer:
     name = 'Misa'
     aliases = ['misa']
