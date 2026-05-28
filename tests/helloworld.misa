@@ -1,0 +1,6 @@
+message: emb string "Hello, World!"
+
+_start:
+    mov a0, message             # Load the address of the string into a0
+    syscall SYS_PRINT_STRING    # Output the string to the terminal
+    exit
