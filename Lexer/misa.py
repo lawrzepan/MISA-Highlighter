@@ -1,4 +1,4 @@
-from pygments.lexers import RegexLexer, words
+from pygments.lexers import RegexLexer, words, include
 from pygments.token import *
 
 __all__ = ['MisaLexer']
@@ -30,6 +30,8 @@ _types_embed_only = (
     'string', 'file'
 )
 
+_all_types = _types + _types_embed_only
+
 _conditions = (
     'eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'ltu', 'lteu', 'gtu', 'gteu', 'feqa', 'fneqa', 'flt', 'fgt', 'fnan', 'finf'
 )
@@ -56,7 +58,17 @@ _monadic_instructions = (
     'not', 'cal', 'jmp', 'jtr', 'jfs', 'syscall', 'rvb', 'ppc', 'clz', 'ctz', 'vpsh', 'vpop'
 )
 
-class MisaLexer:
+_all_instructions = _zeroadic_instructions + _monadic_instructions
+
+Instruction = Keyword.Instruction
+
+Separator = Punctuation.Separator
+
+Register = Name.Register
+
+Label = Name.Label
+
+class MisaLexer(RegexLexer):
     name = 'Misa'
     aliases = ['misa']
     filenames = ['*.misa']
@@ -65,11 +77,33 @@ class MisaLexer:
         'root': [
             (r'\s+', Whitespace),
             (r'#.*\n', Comment),
-            (words(_zeroadic_instructions), instruction.Zeroadic),
-            (words(_monadic_instructions), instruction.Monadic, 'instruction')
+            (words(_zeroadic_instructions), Instruction.Zeroadic),
+            (words(_monadic_instructions), Instruction.Monadic, 'instruction')
         ],
 
-        'instruction': [
-            
-        ]
+        'numeric': [
+            (r'0[x][a-zA-Z0-9]+', Literal.Hexadecimal),
+            (r'0[b][01]+', Literal.Binary),
+            (r'[0-9]+?\.[0-9]+', Literal.Float),
+            (r'[0-9]+', Literal.Integer)
+        ],
+
+        'operrand': [
+            (r'\s+', Whitespace),
+            #(r',', Separator),
+            (words(_argument_registers), Register.Argument),
+            (words(_saved_registers), Register.Saved),
+            (words(_temporary_registers), Register.Temporary),
+            (words(_syscalls), Keyword.Syscall),
+            (words(_types), Keyword.Type),
+            (words(_conditions), Keyword.Condition),
+            (words(_variables), Keyword.VariableBuiltIn),
+            (words(_constants), Name.ConstantBuiltIn),
+            (words(_button_constants), Name.ConstantBuiltIn.Button),
+            include('numeric')
+            (r'".*?"', Literal.String)
+            (r'.\w+', Label.Local),
+            (r'@\w+?[+-]', Label.Reuseable),
+            (r'\w+', Label.Global),
+        ],
     }
