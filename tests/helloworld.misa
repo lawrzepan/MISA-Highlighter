@@ -1,4 +1,8 @@
-message: emb string "Hello, World!"
+message: res string "Hello, World!", 0.0+yellow
+
+def foo 5^5
+
+bmk "start"
 
 _start:
     mov a0, message             # Load the address of the string into a0

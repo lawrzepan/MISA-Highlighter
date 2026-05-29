@@ -1,3 +1,47 @@
     mov a0, message             # Load the address of the string into a0
     syscall SYS_PRINT_STRING    # Output the string to the terminal
     exit
+
+<div class="highlight"><pre>
+<span></span>
+<span class="nl nl-Global" title="Name.Label.Global">message:</span>
+<span class="w" title="Text.Whitespace"> </span>
+<span class="k k-Directive k-Directive-Data" title="Keyword.Directive.Data">res</span>
+<span class="w" title="Text.Whitespace"> </span>
+<span class="kt kt-Embed" title="Keyword.Type.Embed">string</span>
+<span class="w" title="Text.Whitespace"> </span>
+<span class="s" title="Literal.String">&quot;Hello, World!&quot;</span>
+<span class="o" title="Operator">,</span>
+<span class="w" title="Text.Whitespace"> </span>
+<span class="l l-Float" title="Literal.Float">0.0</span>
+<span class="o" title="Operator">+</span>
+<span class="no" title="Name.Constant">yellow</span>
+
+<span class="k k-Directive k-Directive-Constant" title="Keyword.Directive.Constant">d</span>
+<span class="no" title="Name.Constant">ef</span>
+<span class="w" title="Text.Whitespace"> </span>
+<span class="no" title="Name.Constant">foo</span>
+<span class="w" title="Text.Whitespace"> </span>
+<span class="no" title="Name.Constant">5</span>
+<span class="o" title="Operator">^</span>
+<span class="no" title="Name.Constant">5</span>
+
+<span class="nl nl-Process" title="Name.Label.Process">_start:</span>
+<span class="w" title="Text.Whitespace">    </span>
+<span class="k k-Instruction k-Instruction-Dyadic" title="Keyword.Instruction.Dyadic">mov</span>
+<span class="w" title="Text.Whitespace"> </span>
+<span class="n n-Register n-Register-Argument" title="Name.Register.Argument">a0</span>
+<span class="p p-Separator" title="Punctuation.Separator">,</span>
+<span class="w" title="Text.Whitespace"> </span>
+<span class="no" title="Name.Constant">message</span>
+<span class="w" title="Text.Whitespace">             </span>
+<span class="c" title="Comment"># Load the address of the string into a0</span>
+<span class="w" title="Text.Whitespace">    </span>
+<span class="k k-Instruction k-Instruction-Monadic" title="Keyword.Instruction.Monadic">syscall</span>
+<span class="w" title="Text.Whitespace"> </span>
+<span class="n n-Syscall" title="Name.Syscall">SYS_PRINT_STRING</span>
+<span class="w" title="Text.Whitespace">    </span>
+<span class="c" title="Comment"># Output the string to the terminal</span>
+<span class="w" title="Text.Whitespace">    </span>
+<span class="k k-Instruction k-Instruction-Zeroadic" title="Keyword.Instruction.Zeroadic">exit</span>
+</pre></div>
