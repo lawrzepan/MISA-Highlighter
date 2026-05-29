@@ -1,4 +1,4 @@
-from pygments.lexers import RegexLexer, words, include
+from pygments.lexer import RegexLexer, words, include
 from pygments.token import *
 
 __all__ = ['MisaLexer']
@@ -76,9 +76,10 @@ class MisaLexer(RegexLexer):
     tokens = {
         'root': [
             (r'\s+', Whitespace),
-            (r'#.*\n', Comment),
+            (r'\#.*', Comment),
             (words(_zeroadic_instructions), Instruction.Zeroadic),
-            (words(_monadic_instructions), Instruction.Monadic, 'instruction')
+            (words(_monadic_instructions), Instruction.Monadic, 'instruction'),
+            (r'mov', Instruction, 'instruction')
         ],
 
         'numeric': [
@@ -89,21 +90,30 @@ class MisaLexer(RegexLexer):
         ],
 
         'operrand': [
-            (r'\s+', Whitespace),
-            #(r',', Separator),
+            (r'[^\S\r\n]+', Whitespace),
             (words(_argument_registers), Register.Argument),
             (words(_saved_registers), Register.Saved),
             (words(_temporary_registers), Register.Temporary),
-            (words(_syscalls), Keyword.Syscall),
+            (words(_syscalls), Name.Syscall),
             (words(_types), Keyword.Type),
             (words(_conditions), Keyword.Condition),
             (words(_variables), Keyword.VariableBuiltIn),
             (words(_constants), Name.ConstantBuiltIn),
             (words(_button_constants), Name.ConstantBuiltIn.Button),
-            include('numeric')
-            (r'".*?"', Literal.String)
-            (r'.\w+', Label.Local),
-            (r'@\w+?[+-]', Label.Reuseable),
+            include('numeric'),
+            (r'".*?"', Literal.String),
+            (r'\.\w+', Label.Local),
+            (r'@\w+?[+-]', Label.Reusable),
             (r'\w+', Label.Global),
         ],
+
+        'instruction' : [
+            (r',', Separator),
+            (r'\n', Whitespace, '#pop'),
+            (r'#.*', Comment, '#pop'),
+            include('operrand'),
+        ]
     }
+
+    #python -m pygments -x -f html -O full,debug_token_types -l Lexer/misa.py:MisaLexer tests/helloworldsimple.misa
+    #python -m pygments -x -l Lexer/misa.py:MisaLexer tests/helloworldsimple.misa
